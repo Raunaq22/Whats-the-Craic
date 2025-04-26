@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  
+  <title>{% block title %}{% endblock %}</title>
+  <link rel="icon" sizes="192x192" href="{% static 'icon/favicon.ico' %}"> 
+
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <script src="{% static 'js/home.js' %}"></script>
+</head>
+
+<!-- body -->
+<body>
+  <header>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark custom-navbar">
+      <a class="navbar-brand" href="/home"><img src="{% static 'icon/android-icon-48x48.png' %}" alt="WTC"></a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Find Events
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/events_list">Explore</a>
+              <a class="dropdown-item" href="/get-events">All Events</a>
+            </div>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/event/create">Create Events</a>
+          </li>
+    
+          <li class="nav-item">
+            <a class="nav-link" href="/contact-us">Contact us</a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="navbar-collapse collapse">
+        <div class="container-fluid">
+          
+            
+              <a class="navbar-brand" style="margin-right: 300px;" href="/home"><img src="{% static 'icon/wtc-logo.png' %}" alt="Your Logo"></a>
+          
+          
+        </div>
+      </div>
+    
+      {% if user.is_authenticated %}
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <img src="{% if user.socialaccount_set.all %}{{ user.socialaccount_set.all.0.get_avatar_url }}{% else %}{% static 'avatar/robot.png' %}{% endif %}" class="avatar-img rounded-circle" style="width: 40px; height: 40px; object-fit: cover;" />
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/dashboard">Dashboard</a>
+            <a class="dropdown-item" href="{% url 'my_events' %}">My Events</a>
+            <a class="dropdown-item" href="/my_tickets/">My Tickets</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/accounts/logout/">Logout</a>
+          </div>
+        </li>
+      </ul>
+      {% else %}
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/accounts/login/">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/accounts/signup/">Register</a>
+        </li>
+      </ul>
+      {% endif %}
+    </nav>
+    
+    
+  </header>
+
+<main>
+    {% block slider %}
+    {% endblock %}
+</main>
+
+ <!-- Middle content -->
+  <main class="container">
+    {% block content %}
+    {% endblock %}
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer py-3 custom-footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h3 style="color: white;">Quick Links</h3>
+          <ul class="list-unstyled">
+            <li><a href="{% url 'home' %}" class="text-light">Home</a></li>
+            <li><a href="{% url 'event_list' %}" class="text-light">Events</a></li>
+            <li><a href="{% url 'event_create' %}" class="text-light">Create an Event</a></li>
+            <li><a href="{% url 'get_all_events' %}" class="text-light">All events</a></li>
+            <li><a href="{% url 'contact-us' %}" class="text-light">Contact Us</a></li>
+            
+            <!-- Add more links as needed -->
+          </ul>
+        </div>
+        <div class="col-md-6 d-flex justify-content-end text-white">
+          <div>
+            <h3>Contact Information</h3>
+            <ul class="list-unstyled">
+              <li>Email: <a href="mailto:raunaqsinghgandhi@yahoo.in" class="text-white" style="text-decoration: none;">raunaqsinghgandhi@yahoo.in</a></li>
+              <li>Phone: +353 8236473822</li>
+              <li>Address: 12 Dame St., Dublin, Ireland</li>
+            </ul>
+          </div>
+        </div>
+        
+      </div>
+      <hr style="border-color: white;">
+      <div class="row">
+        <div class="col-md-12 text-center">
+          <span class="text-light">&copy; 2023 What's the Craic. All rights reserved.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="{% static 'js/base.js' %}"></script>
+  <script src="{% static 'js/event-list.js' %}"></script>
+  <script>
+$(document).ready(function() {
+    // Get the current URL
+    var currentUrl = window.location.href;
+
+    // Iterate through each navbar link and dropdown menu item
+    $('.navbar-nav .nav-link, .dropdown-menu .dropdown-item').each(function() {
+        // Get the link's href attribute
+        var linkHref = $(this).attr('href');
+
+        // Check if the current URL contains the link's href
+        if (currentUrl.indexOf(linkHref) !== -1) {
+            // Add the active class to the link's parent list item
+            $(this).closest('.nav-item').addClass('active');
+        }
+    });
+});
+
+  </script>
+</body>
+</html>
+

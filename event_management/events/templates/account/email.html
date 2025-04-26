@@ -1,0 +1,95 @@
+{% extends "account/base_manage_email.html" %}
+{% load allauth i18n %}
+{% block head_title %}
+    {% trans "Email Addresses" %}
+{% endblock head_title %}
+{% block content %}
+<style>
+    /* Custom CSS styles */
+    .email-addresses-container {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+    #headings {
+        margin-bottom: 30px;
+    }
+    .email-address {
+        margin-bottom: 15px;
+    }
+    .email-badge {
+        margin-left: 10px;
+    }
+    .add-email-form {
+        margin-top: 30px;
+    }
+</style>
+<div class="container email-addresses-container">
+    <div id="headings" class="text-center">
+        {% element h1 %}
+            {% trans "Email Addresses" %}
+        {% endelement %}
+    </div>
+    {% if emailaddresses %}
+        <p>{% trans 'The following email addresses are associated with your account:' %}</p>
+        {% url 'account_email' as email_url %}
+        {% element form form=form action=email_url method="post" %}
+            {% slot body %}
+                {% csrf_token %}
+                {% for radio in emailaddress_radios %}
+                    {% with emailaddress=radio.emailaddress %}
+                        <div class="email-address">
+                            {% element field type="radio" checked=radio.checked name="email" value=emailaddress.email id=radio.id %}
+                                {% slot label %}
+                                    {{ emailaddress.email }}
+                                    {% if emailaddress.verified %}
+                                        <span class="badge bg-success email-badge">{% translate "Verified" %}</span>
+                                    {% else %}
+                                        <span class="badge bg-warning email-badge">{% translate "Unverified" %}</span>
+                                    {% endif %}
+                                    {% if emailaddress.primary %}
+                                        <span class="badge bg-primary email-badge">{% translate "Primary" %}</span>
+                                    {% endif %}
+                                {% endslot %}
+                            {% endelement %}
+                        </div>
+                    {% endwith %}
+                {% endfor %}
+            {% endslot %}
+            {% slot actions %}
+                {% element button type="submit" name="action_primary" %}
+                    {% trans 'Make Primary' %}
+                {% endelement %}
+                {% element button tags="secondary" type="submit" name="action_send" %}
+                    {% trans 'Re-send Verification' %}
+                {% endelement %}
+                {% element button tags="danger delete" type="submit" name="action_remove" %}
+                    {% trans 'Remove' %}
+                {% endelement %}
+            {% endslot %}
+        {% endelement %}
+    {% else %}
+        {% include "account/snippets/warn_no_email.html" %}
+    {% endif %}
+    {% if can_add_email %}
+        <div class="add-email-form">
+            {% element h2 %}
+                {% trans "Add Email Address" %}
+            {% endelement %}
+            {% url 'account_email' as action_url %}
+            {% element form form=form method="post" action=action_url %}
+                {% slot body %}
+                    {% csrf_token %}
+                    {% element fields form=form %}
+                    {% endelement %}
+                {% slot actions %}
+                    {% element button name="action_add" type="submit" %}
+                        {% trans "Add Email" %}
+                    {% endelement %}
+                {% endslot %}
+            
+            {% endslot %}
+            {% endelement %}
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}

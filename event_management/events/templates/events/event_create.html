@@ -1,0 +1,80 @@
+{% extends '../include/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create New Event{% endblock %}
+
+{% block slider %}
+
+<div class="container-fluid-image">
+
+    <div class="container" style="max-width: 750px;">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="display-4 text-center mb-4 gradient-heading">Create New Event</h1>
+            </div>
+        </div>
+    
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                {{ form.title|as_crispy_field }}
+            </div>
+            <div class="form-group">
+                {{ form.description|as_crispy_field }}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="id_location">Location</label>
+                <input type="text" id="id_location" name="location" class="form-control" placeholder="Click on the map to select a location" readonly>
+                <small id="location-help" class="form-text text-muted"></small>
+            </div>
+            <div id="map"></div>
+            <input type="hidden" id="selected-location" name="selected_location">
+
+            <div class="form-group">
+                {{ form.categories|as_crispy_field }}
+            </div>
+            <div class="form-group">
+                {{ form.date|as_crispy_field }}
+            </div>
+            <div class="form-group">
+                {{ form.time|as_crispy_field }}
+            </div>
+            
+            
+            <div class="form-group">
+                <label class="form-label" for="{{ form.image.id_for_label }}">Event Image</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile" name="{{ form.image.name }}" accept="image/*" id="{{ form.image.id_for_label }}">
+                    <label class="custom-file-label" for="inputGroupFile">Choose file</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                {{ form.capacity|as_crispy_field }}
+            </div>
+            <div class="form-group">
+                {{ form.price|as_crispy_field }}
+            </div>
+            
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary btn-lg" style="background-color: #32936F; border-color: #32936F;">Create Event</button>
+            </div>
+        </form>
+    
+        {% if form.errors %}
+            <div class="alert alert-danger mt-3" role="alert">
+                <strong>There were errors in the form:</strong>
+                <ul>
+                    {% for field, errors in form.errors.items %}
+                        {% for error in errors %}
+                            <li>{{ field }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+    
+{% endblock %}

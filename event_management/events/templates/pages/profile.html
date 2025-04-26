@@ -1,0 +1,18 @@
+{% extends '../include/base.html' %}
+
+{% block content %}
+<main class="container text-center mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h1 id="headings" class="mb-4">Your Profile</h1>
+            {% if user.is_authenticated %}
+                <p>You are logged in as <strong>{{ user }}</strong>.</p>
+                <p><a href="/accounts/logout/" class="btn btn-danger mt-4">Log out</a></p>
+            {% else %}
+                <p>You are not logged in.</p>
+                <p><a href="/accounts/login/" class="btn btn-primary mt-4">Log in</a></p>
+            {% endif %}
+        </div>
+    </div>
+</main>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends '../include/base.html' %}
+
+{% block title %}Payment Success{% endblock %}
+
+{% block content %}
+<main class="container mt-5 mb-5">
+  <div class="col-md-12">
+    <h1>Payment Successful</h1>
+    <p>Your payment was successful. Thank you for purchasing tickets!</p>
+    <a href="{% url 'my_tickets' %}" class="btn btn-primary">View My Tickets</a>
+  </div>
+</main>
+{% endblock %}

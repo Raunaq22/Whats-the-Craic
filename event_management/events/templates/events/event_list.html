@@ -1,0 +1,149 @@
+{% extends '../include/base.html' %}
+{% block title %}Event List{% endblock %}
+
+{% block slider %}
+<!-- Filter body -->
+<div class="container-fluid bg-light">
+  <div class="container py-5">
+      <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+                <label for="county-filter">Best events in:</label>
+                <form action="{% url 'event_list' %}" method="GET">
+                    <select id="county-filter" class="form-control" name="county" onchange="this.form.submit()">
+                        <!-- Add options for each county -->
+                        {% for county in counties %}
+                            {% if county == selected_county %}
+                                <option value="{{ county }}" selected>{{ county }}</option>
+                            {% else %}
+                                <option value="{{ county }}">{{ county }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </form>
+                <p id="county-message" style="padding-top: 20px; font-size: 16px;">
+                    In search of activities in {{ selected_county }}</span>? We offer a ton of fantastic events and information, regardless of whether you're a native, new in town, or just passing through. You can search by area, popular items, our best recommendations, freebies, and more. You can do this. All set?
+                </p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            {% load static %}
+              <img src="{% static 'images/ireland-festivals.jpg' %}" alt="Ireland Festival" class="img-fluid">
+          </div>
+      </div>
+  </div>
+</div>
+
+<!-- Popular section -->
+<div class="container py-5" id="popular-events-section" style="max-width: 1400px;">
+    <h2 id="headings">Popular in {{ selected_county }}</h2>
+    <div class="row">
+        {% for event in events_by_county %}
+        <div class="col-md-3 text-center mb-4">
+            <div class="card" data-county="{{ event.county }}">
+                <!-- Hidden input field to store county information -->
+                <input type="hidden" class="event-county" value="{{ event.county }}">
+            {% if event.image %}
+            <img src="{{ event.image.url }}" class="card-img-top" alt="Event Image">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ event.title }}</h5>
+              <p class="card-text">{{ event.date }}</p>
+              <a href="{% url 'event_detail' event.id %}" class="btn btn-info" style="background-color: #32936F; border-color: #32936F;">View Details</a>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+<!-- Other Categories section -->
+<div class="container py-5" id="events-section" style="max-width: 1400px;">
+    <div class="row">
+        <div class="col-md-12">
+            <h2 id="headings">Newly Added</h2>
+            <div class="row">
+                {% for event in newly_added_events %}
+                {% if forloop.counter <= 8 %} {# Add this condition to limit to 8 events #}
+                <div class="col-md-3 text-center mb-4">
+                    <div class="card" data-county="{{ event.county }}">
+                        <!-- Hidden input field to store county information -->
+                        <input type="hidden" class="event-county" value="{{ event.county }}">
+                    {% if event.image %}
+                    <img src="{{ event.image.url }}" class="card-img-top" alt="Event Image">
+                    {% endif %}
+                    <div class="card-body">
+                      <h5 class="card-title">{{ event.title }}</h5>
+                      <p class="card-text">{{ event.date }}</p>
+                      <a href="{% url 'event_detail' event.id %}" class="btn btn-info" style="background-color: #32936F; border-color: #32936F;">View Details</a>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <br><br><br>        
+            <!-- Closing Soon -->
+            <h2 id="headings">Closing Soon</h2>
+            <div class="row">
+                {% for event in closing_soon_events %}
+                {% if forloop.counter <= 8 %} {# Add this condition to limit to 8 events #}
+                <div class="col-md-3 text-center mb-4">
+                    <div class="card" data-county="{{ event.county }}">
+                        <!-- Hidden input field to store county information -->
+                        <input type="hidden" class="event-county" value="{{ event.county }}">
+                    {% if event.image %}
+                    <img src="{{ event.image.url }}" class="card-img-top" alt="Event Image">
+                    {% endif %}
+                    <div class="card-body">
+                      <h5 class="card-title">{{ event.title }}</h5>
+                      <p class="card-text">{{ event.date }}</p>
+                      <a href="{% url 'event_detail' event.id %}" class="btn btn-info" style="background-color: #32936F; border-color: #32936F;">View Details</a>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <br><br><br> 
+            <!-- Hot Events -->
+            <h2 id="headings">Hot Events</h2>
+            <div class="row">
+                {% for event in hot_events %}
+                {% if forloop.counter <= 8 %} {# Add this condition to limit to 8 events #}
+                <div class="col-md-3 text-center mb-4">
+                    <div class="card" data-county="{{ event.county }}">
+                        <!-- Hidden input field to store county information -->
+                        <input type="hidden" class="event-county" value="{{ event.county }}">
+                    {% if event.image %}
+                    <img src="{{ event.image.url }}" class="card-img-top" alt="Event Image">
+                    {% endif %}
+                    <div class="card-body">
+                      <h5 class="card-title">{{ event.title }}</h5>
+                      <p class="card-text">{{ event.date }}</p>
+                      <a href="{% url 'event_detail' event.id %}" class="btn btn-info" style="background-color: #32936F; border-color: #32936F;">View Details</a>
+                    </div>
+                  </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <br><br><br> 
+            
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+
+

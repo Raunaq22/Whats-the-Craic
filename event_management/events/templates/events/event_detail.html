@@ -1,0 +1,74 @@
+{% extends '../include/base.html' %}
+
+{% block title %}Event Detail{% endblock %}
+
+{% block slider %}
+{% load static %}
+<div class="container-fluid" style="padding: 0;">
+  <div id="bannerbg">
+    <div class="container">
+      {% if event.image %}
+      <div class="row justify-content-center">
+        <div class="col-12 text-center">
+          <img src="{{ event.image.url }}" class="bannerimg img-fluid mb-4" alt="Event Image">
+        </div>
+      </div>
+      {% else %}
+      <div class="row justify-content-center">
+        <div class="col-12 text-center">
+          <img src="{% static 'images/error-image-generic.png' %}" class="img-fluid mb-4" alt="Error Image">
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <h1 class="titleevent display-4">{{ event.title }}</h1>
+  <p class="description">{{ event.description }}</p>
+
+  <div class="row">
+    <div class="col-md-10">
+
+      <h2 id="spacehead"><strong>Date and Time</strong></h2>
+      <p><i class="fa fa-calendar"></i> Starts on {{ event.date }} at {{ event.time }}</p>
+
+      <h2 id="spacehead"><strong>Location</strong></h2>
+      <p><i class="fa fa-map-marker"></i> {{ event.location }}</p>
+
+    </div>
+    <div class="col-md-10">
+      <h2 id="spacehead"><strong>Category</strong></h2>
+      <p>{{ event.get_categories_display }}</p>
+
+      <h2 id="spacehead"><strong>Organizer</strong></h2>
+      <p> {{ event.organizer }}</p>
+
+      <h2 id="spacehead"><strong>Capacity</strong></h2> 
+      <p>{{ event.capacity }}</p>
+
+      <h2 id="spacehead"><strong>Price</strong></h2> 
+      <p> {{ event.price }}€</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="container mt-4 mb-4">
+  <div class="row justify-content-center">
+    <!-- Buy Tickets Button -->
+    <div class="col-md-2">
+      <form method="POST" action="{% url 'purchase_tickets' event.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-lg btn-block rounded-pill">Buy Tickets</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

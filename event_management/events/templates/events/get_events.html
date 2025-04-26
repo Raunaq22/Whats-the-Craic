@@ -1,0 +1,175 @@
+{% extends '../include/base.html' %}
+{% block title %}All Events{% endblock %}
+
+{% block slider %}
+    <title>All Events</title>
+</head>
+<body>
+
+    <div class="container mt-5 mb-3">
+        <div class="row">
+            <div class="container mb-3">
+                <h1 id="headings">Events all Over Ireland</h1>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="filter-county">Filter by County:</label>
+                            <select id="filter-county" class="form-control">
+                                <option value="">All Counties</option>
+                                {% for county_name in counties %}
+                                    <option value="{{ county_name }}">{{ county_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="filter-tags">Filter by Tags:</label>
+                                <select id="filter-tags" class="form-control">
+                                    <option value="">All Tags</option>
+                                    {% for tag in tags %}
+                                        <option value="{{ tag }}">{{ tag }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="filter-category">Filter by Category:</label>
+                                <select id="filter-category" class="form-control">
+                                    <option value="">All Categories</option>
+                                    {% for category in categories %}
+                                        <option value="{{ category }}">{{ category }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                    
+                </div>
+                <input type="text" id="event-search" class="form-control" placeholder="Search for events...">
+
+                <div class="row">
+                    {% for event in events %}
+                        <div class="col-12 mb-4">
+                            <div class="card event-card" data-tags="{% for tag in event.tags.all %}{{ tag.name }}{% if not forloop.last %},{% endif %}{% endfor %}" data-category="{{ event.get_categories_display }}">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h5 class="card-title"><a href="{% url 'event_detail' event.id %}">{{ event.title }}</a></h5>
+                                            <p class="card-text">{{ event.date }}</p>
+                                            <p class="card-text card-county">{{ event.county }}</p>
+                                            <p class="card-text">{{ event.get_categories_display }}</p>
+                                        </div>
+                                        
+                                        <!-- Edit and Delete buttons -->
+                                        {% if request.user == event.organizer %}
+                                        <div class="edit-delete-buttons">
+                                            <form method="get" action="{% url 'event_update' event.id %}">
+                                                <button type="submit" class="btn btn-link text-primary btn-lg mr-2"><i class="fa fa-pencil fa-lg"></i></button>
+                                            </form>
+                                            <form method="post" action="{% url 'event_delete' event.id %}">
+                                                {% csrf_token %}
+                                                <button type="submit" class="btn btn-link text-danger btn-lg"><i class="fa fa-trash fa-lg"></i></button>
+                                            </form>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                
+                
+            </div>
+        </div>
+
+    </div>
+    <style>
+        .event-card {
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            transition: box-shadow 0.3s ease;
+            height: auto; /* Adjust the height as needed */
+            max-height: 200px; /* Set a maximum height for the cards */
+            overflow: auto; /* Add overflow property to enable scrolling if content exceeds height */
+        }
+
+        .card-body {
+            min-height: 20px;
+        }
+
+        .event-card:hover {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .card-body .btn {
+            position: relative; /* Adjust as needed */
+            bottom: 5px;
+            top: 5px;
+        }   
+
+        .card-body .btn:last-child {
+            margin-right: 0; /* Remove margin for the last button */
+        }
+        
+    </style>
+    <script>
+        // Script for filtering events
+        document.getElementById("filter-county").addEventListener("change", applyFilter);
+        document.getElementById("filter-tags").addEventListener("change", applyFilter);
+        document.getElementById("filter-category").addEventListener("change", applyFilter);
+    
+        function applyFilter() {
+            var county = document.getElementById("filter-county").value;
+            var tags = document.getElementById("filter-tags").value;
+            var category = document.getElementById("filter-category").value;
+
+            var eventCards = document.querySelectorAll(".event-card");
+
+            eventCards.forEach(function(card) {
+                var cardCounty = card.querySelector(".card-county").textContent;
+                var cardTags = card.dataset.tags;
+                var cardCategory = card.dataset.category;
+
+                var showCard = true;
+
+                if (county && cardCounty !== county) {
+                    showCard = false;
+                }
+
+                if (tags && !cardTags.includes(tags)) {
+                    showCard = false;
+                }
+
+                if (category && cardCategory !== category) {
+                    showCard = false;
+                }
+
+                card.style.display = showCard ? "" : "none";
+            });
+        }
+   
+        // Script for searching events
+        document.getElementById("event-search").addEventListener("input", function() {
+            var input, filter, cards, i, txtValue;
+            input = document.getElementById("event-search");
+            filter = input.value.toUpperCase();
+            cards = document.querySelectorAll(".event-card");
+            cards.forEach(function(card) {
+                var title = card.querySelector(".card-title");
+                var date = card.querySelector(".card-text");
+                var county = card.querySelector(".card-county");
+                var category = card.querySelector(".card-category");
+                if (title.textContent.toUpperCase().indexOf(filter) > -1 || date.textContent.toUpperCase().indexOf(filter) > -1 || county.textContent.toUpperCase().indexOf(filter) > -1 || category.textContent.toUpperCase().indexOf(filter) > -1) {
+                    card.style.display = "";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+{% endblock %}

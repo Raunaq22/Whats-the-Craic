@@ -1,0 +1,161 @@
+{% extends '../include/base.html' %}
+{% load static %}
+
+{% block title %}Home - What's the Craic{% endblock %}
+
+
+{% block slider %}
+<div class="row">
+  <div class="col-12 mx-0 w-100">
+
+    <div class="slideshow-container">
+
+      <div class="mySlides fade">
+        <img src="{% static 'images/banner-1.png' %}" style="width:100%">
+      </div>
+
+      <div class="mySlides fade">
+        <img src="{% static 'images/banner-2.png' %}" style="width:100%">
+      </div>
+
+      <div class="mySlides fade">
+        <img src="{% static 'images/banner-3.png' %}" style="width:100%">
+      </div>
+    </div>
+    <br>
+
+    <div style="text-align:center" x>
+      <span class="dot"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="col-12">
+
+    <p class="h1 text-center" style="color: #32936F; font-weight: 1000;">Featured Events</p>
+
+  </div>
+</div>
+
+<section class="container" style="max-width: 1400px;">
+  <div class="row">
+    {% for event in featured_events %}
+      <div class="col-md-3 text-center mb-4">
+        <div class="card">
+          {% if event.image %}
+            <img src="{{ event.image.url }}" class="card-img-top" alt="Event Image">
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{{ event.title }}</h5>
+            <p class="card-text">{{ event.date }}</p>
+            <a href="{% url 'event_detail' event.id %}" class="btn btn-info" style="background-color: #32936F; border-color: #32936F;">Discover More</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="mt-5" style="background-color: #32936f70;">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <img src="{% static 'images/concert.jpg' %}" class="img-fluid" alt="Call to Action Image">
+    </div>
+    <div class="col-md-6">
+      <div class="text-center" style="color: white; font-weight: 450;">
+        <h2 class="mb-4" style="font-size: 50px;">Are you hosting an event ?</h2>
+        <p class="mb-4 mr-4" style="font-size: 20px;">We offer a myriad of enticing features designed to simplify your experience. Enjoy hassle-free planning with no set-up fees. Our streamlined sign-up process and swift account activation ensure you can start organizing your event promptly. Say goodbye to tedious paperwork and hello to effortless event management.</p>
+        <a href="{% url 'event_create' %}" class="btn btn-primary">Create Event</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<section class="testimonials mt-5" style="background-color: #32936F;">
+  <div class="container" style="padding-top: 30px; padding-bottom: 30px;">
+    <h1 class="text-center" style="font-weight: 1000;color: white;">Testimonials</h1>
+    <div class="row">
+
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img class="rounded-circle mx-auto mt-4" alt="avatar1" src="{% static 'headshots/imghead1.jpg' %}" style="height: 150px; width: 150px;">
+          <div class="card-body">
+            <blockquote class="blockquote text-center">
+              <p class="mb-0" style="font-size: 16px;">"I had an amazing experience with What's the Craic. The events are always well-organized and enjoyable. I highly recommend it!"</p>
+              <footer class="blockquote-footer">John Doe</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img class="rounded-circle mx-auto mt-4" alt="avatar1" src="{% static 'headshots/imghead2.jpg' %}" style="height: 150px; width: 150px;">
+          <div class="card-body">
+            <blockquote class="blockquote text-center">
+              <p class="mb-0" style="font-size: 16px;">"What's the Craic has been a lifesaver for finding fun and interesting events in my area. Keep up the great work!"</p>
+              <footer class="blockquote-footer">Jane Smith</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 mb-4">
+        <div class="card">
+          <img class="rounded-circle mx-auto mt-4" alt="avatar1" src="{% static 'headshots/imghead3.jpg' %}" style="height: 150px; width: 150px;">
+          <div class="card-body">
+            <blockquote class="blockquote text-center">
+              <p class="mb-0" style="font-size: 16px;">"I've been using What's the Craic for a while now, and it's always my go-to for finding new and exciting events to attend."</p>
+              <footer class="blockquote-footer">Michael Johnson</footer>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<section class="newsletter">
+  <div class="container">
+    <h1 class="text-center mt-5" id="headings">Subscribe to Our Newsletter</h1>
+    <p class="text-center">Get updates on our latest exciting events and special offers straight to your inbox.</p>
+    <form id="subscribe-form" action="/" method="post">
+    {% csrf_token %}
+      <div class="input-group mt-5">
+        <input id="email-input" type="email" name="email" class="form-control" placeholder="Enter your email" required>
+        <button id="subscribe-btn" class="btn btn-primary ml-1" type="submit">Subscribe</button>
+      </div>
+    </form>
+    <div id="subscribe-success" class="alert alert-success mt-3" role="alert" style="display: none;">
+      You have subscribed successfully!
+    </div>
+  </div>
+</section>
+
+<br> <br> <br> <br> <br> <br>
+
+{% endblock %}
+
+{% block content %}
+
+<script>
+  let slideIndex = 0;
+  showSlides();
+
+  document.getElementById('subscribe-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    document.getElementById('subscribe-success').style.display = 'block';
+
+    document.getElementById('email-input').value = '';
+
+  });
+</script>
+
+{% endblock %}
