@@ -1,6 +1,5 @@
 import os
 import sys
-import traceback
 
 # Add the project root to the Python path
 project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -11,42 +10,42 @@ app_path = os.path.join(project_path, 'event_management')
 if app_path not in sys.path:
     sys.path.insert(0, app_path)
 
-# Print environment for debugging
-print("Python version:", sys.version)
-print("PYTHONPATH:", sys.path)
-print("Current directory:", os.getcwd())
-print("Files in directory:", os.listdir())
-
-# Set Django settings - using just 'event_management.settings' rather than the nested path
+# Set Django settings
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'event_management.settings')
-
-# Force DEBUG mode for troubleshooting
-os.environ['DEBUG'] = 'True'
 
 try:
     # Import and configure Django
     import django
     django.setup()
     
-    # Run migrations on startup
-    print("Running migrations on startup...")
-    from django.core.management import call_command
-    call_command('migrate_and_seed')
-    
     # Import Django WSGI handler
     from django.core.wsgi import get_wsgi_application
-    app = application = get_wsgi_application()
-except Exception as e:
-    # Print detailed error information
-    print("ERROR INITIALIZING APPLICATION:", str(e))
-    traceback.print_exc()
     
-    # Create a simple error handler
+    # Create WSGI app
+    django_app = get_wsgi_application()
+    
+    # Add WhiteNoise middleware for static files
+    from whitenoise import WhiteNoise
+    app = application = WhiteNoise(django_app)
+    
+    # Check possible locations for static files
+    possible_static_dirs = [
+        os.path.join(os.getcwd(), 'staticfiles'),
+        os.path.join(app_path, 'staticfiles'),
+        os.path.join(project_path, 'staticfiles')
+    ]
+    
+    # Add static files from all available directories
+    for static_dir in possible_static_dirs:
+        if os.path.exists(static_dir):
+            app.add_files(static_dir, prefix='static/')
+            
+except Exception as e:
+    # Create a simple error handler for any initialization errors
     def app(event, context):
         return {
             'statusCode': 500,
-            'body': f'Server initialization error: {str(e)}\n{traceback.format_exc()}'
+            'body': f'Server initialization error: {str(e)}'
         }
 
-# This file is required by Vercel for Python serverless functions
-# It imports the WSGI application from your Django project 
+# This file is required by Vercel for Python serverless functions 
