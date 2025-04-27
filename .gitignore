@@ -70,4 +70,4 @@ coverage.xml
 # Migrations
 # Uncomment if you want to ignore migrations
 # */migrations/*.py
-# !*/migrations/__init__.py 
+# !*/migrations/__init__.py
