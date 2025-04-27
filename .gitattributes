@@ -1,0 +1,14 @@
+# Set Django as the primary language
+*.py linguist-detectable=true
+*.js linguist-detectable=true
+*.html linguist-detectable=false
+*.css linguist-detectable=false
+
+# Improve Django detection
+*.py linguist-language=Python
+**/manage.py linguist-language=Python
+**/urls.py linguist-language=Python
+**/settings.py linguist-language=Python
+
+# Mark migrations as generated to exclude from language stats
+**/migrations/* linguist-generated=true 

@@ -1,4 +1,12 @@
-# Event Management System
+<div align="center">
+  <img src="event_management/events/templates/static/icon/ms-icon-310x310.png" alt="Event Management System Logo" width="200">
+  <br>
+  <img src="event_management/events/templates/static/icon/wtc-logo.png" alt="WTC Logo" width="200">
+  <br><br>
+  <h3>
+    <a href="https://whats-the-craic.vercel.app" target="_blank">☘️ Live Demo</a>
+  </h3>
+</div>
 
 A Django-based event management system with user authentication, event creation, and ticket booking capabilities.
 
@@ -11,13 +19,21 @@ A Django-based event management system with user authentication, event creation,
 - Email notifications
 - Responsive design
 
+## Tech Stack
+
+- **Backend**: Django, PostgreSQL
+- **Frontend**: HTML, CSS, JavaScript, Bootstrap
+- **Authentication**: Django-allauth
+- **Payments**: Stripe
+- **Deployment**: Vercel, Supabase
+
 ## Prerequisites
 
 - Python 3.8 or higher
 - PostgreSQL 12 or higher
 - pip (Python package manager)
 
-## Installation
+## Development Setup
 
 1. Clone the repository:
 ```bash
@@ -44,55 +60,52 @@ pip install -r requirements.txt
      ```
    - Or use an existing database and update the DATABASE_URL in .env
 
-5. Create a .env file:
+5. Create a .env file with the following content:
 ```bash
-cp .env.example .env
-```
-Edit the .env file with your configuration:
-- Set your SECRET_KEY
-- Update DATABASE_URL with your PostgreSQL credentials
-- Configure email settings
-- Add Stripe and social auth credentials
+# Django settings
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
 
-6. Run migrations:
+# Database settings
+DATABASE_URL=postgresql://username:password@localhost:5432/event_management
+
+# Email settings
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_HOST_USER=your-email@gmail.com
+EMAIL_HOST_PASSWORD=your-app-password
+
+# Stripe settings
+STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
+STRIPE_SECRET_KEY=your-stripe-secret-key
+
+# Social auth settings
+GITHUB_CLIENT_ID=your-github-client-id
+GITHUB_SECRET=your-github-secret
+GOOGLE_CLIENT_ID=your-google-client-id
+GOOGLE_SECRET=your-google-secret
+```
+
+6. Run migrations and create a superuser:
 ```bash
 python manage.py migrate
-```
-
-7. Create a superuser:
-```bash
 python manage.py createsuperuser
 ```
 
-8. Collect static files:
+7. Collect static files and start the development server:
 ```bash
 python manage.py collectstatic
-```
-
-9. Run the development server:
-```bash
 python manage.py runserver
 ```
 
-Visit http://localhost:8000 to see the application.
-
-## Deployment
-
-This application is configured for deployment on Vercel with PostgreSQL on Supabase:
-
-1. Create a Supabase account and project
-2. Get your PostgreSQL connection string from Supabase
-3. Set up environment variables on Vercel
-4. Deploy to Vercel using their CLI or GitHub integration
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Commit your changes
-4. Push to the branch
-5. Create a Pull Request
+The development server will be available at http://localhost:8000
 
 ## License
 
-This project is licensed under the MIT License. 
+This project is licensed under the MIT License.
+
+## Author 👨‍💻
+
+Raunaq Singh Gandhi 
