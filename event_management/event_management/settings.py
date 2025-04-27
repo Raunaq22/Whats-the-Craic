@@ -16,8 +16,9 @@ from decouple import config, Csv
 import dj_database_url
 from dotenv import load_dotenv
 
-# Load environment variables
-load_dotenv()
+# Load environment variables - only in development
+if os.path.exists(os.path.join(os.path.dirname(__file__), '../../.env')):
+    load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,12 +28,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'your-default-secret-key-for-development')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'your-default-secret-key-for-development')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+# Force DEBUG mode for troubleshooting
+DEBUG = True
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# Allow all hosts for troubleshooting
+ALLOWED_HOSTS = ['*']
 
 SITE_ID = 1
 
@@ -59,16 +62,12 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-
     'allauth.socialaccount.providers.github',
     'allauth.socialaccount.providers.google',
     'allauth.socialaccount.providers.yahoo',
 
     'crispy_forms',
     'crispy_bootstrap5',
-
-
-
 ]
 
 MIDDLEWARE = [
@@ -109,7 +108,12 @@ WSGI_APPLICATION = 'event_management.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
+# Development database fallback
+if 'DATABASE_URL' not in os.environ:
+    print("WARNING: DATABASE_URL not found in environment, using SQLite")
+    os.environ['DATABASE_URL'] = 'sqlite:///db.sqlite3'
+
+DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')
 
 DATABASES = {
     'default': dj_database_url.config(
@@ -153,13 +157,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-# Email configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+# Email configuration - use console backend for development
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
@@ -189,38 +188,30 @@ GRAPH_MODELS = {
     "group_models": True,
 }
 
-STRIPE_PUBLISHABLE_KEY = config('STRIPE_PUBLISHABLE_KEY')
-STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+# Stripe configuration
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', '')
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
 
-
-
+# Social account providers
 SOCIALACCOUNT_PROVIDERS = {
     "github": {
         "VERIFIED_EMAIL": True,
         "APP": {
-            "client_id": config('GITHUB_CLIENT_ID'),
-            "secret": config('GITHUB_SECRET'),
+            "client_id": os.environ.get('GITHUB_CLIENT_ID', ''),
+            "secret": os.environ.get('GITHUB_SECRET', ''),
         }
     },
     "google": {
         "APPS": [
             {
-                "client_id": config('GOOGLE_CLIENT_ID'),
-                "secret": config('GOOGLE_SECRET'),
+                "client_id": os.environ.get('GOOGLE_CLIENT_ID', ''),
+                "secret": os.environ.get('GOOGLE_SECRET', ''),
             },
         ],
     },
-
 }
 
-# Security Settings
-if not DEBUG:
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    X_FRAME_OPTIONS = 'DENY'
+# Disable security settings for debugging
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
