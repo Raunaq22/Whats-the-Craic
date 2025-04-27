@@ -27,7 +27,12 @@ try:
     # Import and configure Django
     import django
     django.setup()
-
+    
+    # Run migrations on startup
+    print("Running migrations on startup...")
+    from django.core.management import call_command
+    call_command('migrate_and_seed')
+    
     # Import Django WSGI handler
     from django.core.wsgi import get_wsgi_application
     app = application = get_wsgi_application()

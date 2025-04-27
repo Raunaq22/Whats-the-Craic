@@ -28,7 +28,14 @@ def styled_sitemap(request):
     return HttpResponse(sitemap_xml, content_type='text/xml')
 
 def home(request):
-    return render(request, 'pages/home.html')
+    try:
+        # Get featured events if tables exist
+        featured_events = Event.objects.all().order_by('-date')[:4]
+        return render(request, 'pages/home.html', {'featured_events': featured_events})
+    except Exception as e:
+        # If database tables don't exist, render the template without events
+        print(f"Database error in home view: {str(e)}")
+        return render(request, 'pages/home.html', {'featured_events': []})
 
 def contact(request):
     if request.method == 'POST':
@@ -233,10 +240,6 @@ def payment_success(request):
 @login_required
 def payment_cancel(request):
     return render(request, 'payments/cancel.html')
-
-def home(request):
-    featured_events = Event.objects.all()[:8]  
-    return render(request, 'pages/home.html', {'featured_events': featured_events})
 
 def get_all_events(request):
     all_events = Event.objects.all()

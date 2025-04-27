@@ -113,8 +113,14 @@ if 'DATABASE_URL' not in os.environ:
     print("WARNING: DATABASE_URL not found in environment, using SQLite")
     os.environ['DATABASE_URL'] = 'sqlite:///db.sqlite3'
 
-DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')
+# Print database URL for debugging (with credentials masked)
+db_url = os.environ.get('DATABASE_URL', '')
+if db_url:
+    masked_url = db_url.replace(db_url.split('@')[0] if '@' in db_url else db_url, '***MASKED***')
+    print(f"Using database URL: {masked_url}")
 
+# Configure database with dj-database-url
+DATABASE_URL = os.environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')
 DATABASES = {
     'default': dj_database_url.config(
         default=DATABASE_URL,
@@ -122,6 +128,11 @@ DATABASES = {
         conn_health_checks=True,
     )
 }
+
+# Print database connection info for debugging
+print(f"Database engine: {DATABASES['default']['ENGINE']}")
+print(f"Database name: {DATABASES['default']['NAME']}")
+print(f"Database host: {DATABASES['default'].get('HOST', 'none')}")
 
 # django-crispy-forms
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
