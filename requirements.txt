@@ -1,4 +1,4 @@
-Django>=4.2,<5.0
+Django>=4.2,<5.1
 python-dotenv>=1.0.0
 django-allauth>=0.60.0
 stripe>=7.0.0
