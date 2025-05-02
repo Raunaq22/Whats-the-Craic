@@ -9,9 +9,21 @@
           "runtime": "python3.9",
           "includeFiles": ["staticfiles/**", "event_management/**", "*.txt"]
         }
+      },
+      {
+        "src": "api/test/index.py",
+        "use": "@vercel/python",
+        "config": {
+          "maxLambdaSize": "15mb",
+          "runtime": "python3.9"
+        }
       }
     ],
     "routes": [
+      {
+        "src": "/api/test",
+        "dest": "api/test/index.py"
+      },
       {
         "src": "/api/(.*)",
         "dest": "api/index.py"
@@ -31,5 +43,11 @@
       "deploymentEnabled": {
         "main": true
       }
+    },
+    "env": {
+      "PYTHON_VERSION": "3.9",
+      "DJANGO_SETTINGS_MODULE": "event_management.settings",
+      "DEBUG": "True",
+      "VERCEL_DEBUG": "1"
     }
   } 
