@@ -1,50 +1,59 @@
 {% extends "account/base_entrance.html" %}
 {% load allauth i18n %}
-{% load crispy_forms_tags %}
 {% block head_title %}
     {% trans "Signup" %}
 {% endblock head_title %}
 {% block content %}
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h1 id="headings" class="text-center mb-4">{% trans "Sign Up" %}</h1>
+        <div class="auth-form-container" style="width: 550px; max-width: 100%;">
+            <h1 class="text-center">{% trans "Sign Up" %}</h1>
             {% url 'account_signup' as action_url %}
-            <form method="post" action="{{ action_url }}" class="mt-4">
+            <form method="post" action="{{ action_url }}">
                 {% csrf_token %}
                 {% if redirect_field_value %}
                     <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                 {% endif %}
-                <div class="form-group">
-                    {{ form.username|as_crispy_field }}
+                <div class="form-group mb-4">
+                    <label for="id_username" class="mb-2">{{ _("Username") }}</label>
+                    <input type="text" name="username" id="id_username" class="form-control py-2" autofocus />
                     {% if form.username.errors %}
-                        <div class="invalid-feedback">{{ form.username.errors }}</div>
+                        <div class="invalid-feedback d-block">{{ form.username.errors }}</div>
                     {% endif %}
                 </div>
-                <div class="form-group">
-                    {{ form.email|as_crispy_field }}
+                <div class="form-group mb-4">
+                    <label for="id_email" class="mb-2">{{ _("Email") }}</label>
+                    <input type="email" name="email" id="id_email" class="form-control py-2" />
                     {% if form.email.errors %}
-                        <div class="invalid-feedback">{{ form.email.errors }}</div>
+                        <div class="invalid-feedback d-block">{{ form.email.errors }}</div>
                     {% endif %}
                 </div>
-                <div class="form-group">
-                    {{ form.password1|as_crispy_field }}
+                <div class="form-group mb-4">
+                    <label for="id_password1" class="mb-2">{{ _("Password") }}</label>
+                    <input type="password" name="password1" id="id_password1" class="form-control py-2" />
                     {% if form.password1.errors %}
-                        <div class="invalid-feedback">{{ form.password1.errors }}</div>
+                        <div class="invalid-feedback d-block">{{ form.password1.errors }}</div>
                     {% endif %}
                 </div>
-                <div class="form-group">
-                    {{ form.password2|as_crispy_field }}
+                <div class="form-group mb-4">
+                    <label for="id_password2" class="mb-2">{{ _("Confirm Password") }}</label>
+                    <input type="password" name="password2" id="id_password2" class="form-control py-2" />
                     {% if form.password2.errors %}
-                        <div class="invalid-feedback">{{ form.password2.errors }}</div>
+                        <div class="invalid-feedback d-block">{{ form.password2.errors }}</div>
                     {% endif %}
                 </div>
-                <button type="submit" class="btn btn-primary btn-block mt-3">{{ _("Sign Up") }}</button>
+                <button type="submit" class="btn btn-primary py-2 mt-3">{% trans "Sign Up" %}</button>
             </form>
-            <p class="text-center mt-3 mb-3">{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+            
+            <div class="text-center mt-4">
+                {% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
+            </div>
 
             {% if SOCIALACCOUNT_ENABLED %}
+                <hr class="my-4">
+                <div class="social-buttons">
                 {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+                </div>
             {% endif %}
         </div>
     </div>

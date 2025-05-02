@@ -40,6 +40,9 @@ try:
         if os.path.exists(static_dir):
             app.add_files(static_dir, prefix='static/')
             
+    # Log success message
+    print("Django application initialized successfully with REST API support")
+            
 except Exception as e:
     # Create a simple error handler for any initialization errors
     def app(event, context):

@@ -66,6 +66,12 @@ INSTALLED_APPS = [
 
     'crispy_forms',
     'crispy_bootstrap5',
+    
+    # REST API
+    'rest_framework',
+    
+    # Better auth UI
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
@@ -172,7 +178,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'events', 'templates', 'static'),
     os.path.join(BASE_DIR, 'events', 'static'),
 ]
 
@@ -203,6 +208,27 @@ GRAPH_MODELS = {
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', '')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
 
+# REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '1000/day'
+    }
+}
+
 # Social account providers
 SOCIALACCOUNT_PROVIDERS = {
     "github": {
@@ -210,6 +236,9 @@ SOCIALACCOUNT_PROVIDERS = {
         "APP": {
             "client_id": os.environ.get('GITHUB_CLIENT_ID', ''),
             "secret": os.environ.get('GITHUB_SECRET', ''),
+        },
+        "AUTH_PARAMS": {
+            "prompt": "select_account",
         }
     },
     "google": {
@@ -219,8 +248,22 @@ SOCIALACCOUNT_PROVIDERS = {
                 "secret": os.environ.get('GOOGLE_SECRET', ''),
             },
         ],
+        "AUTH_PARAMS": {
+            "access_type": "online",
+            "prompt": "select_account",
+        }
     },
 }
+
+# AllAuth settings
+ACCOUNT_LOGIN_METHODS = {'username', 'email'}  # Replaces ACCOUNT_AUTHENTICATION_METHOD
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'username*', 'password1*', 'password2*']  # Replaces EMAIL_REQUIRED and USERNAME_REQUIRED
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # Change to 'mandatory' in production
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https' if not DEBUG else 'http'
+
+# Bypass social account intermediate pages
+SOCIALACCOUNT_LOGIN_ON_GET = True  # Skip the intermediate social login page
+SOCIALACCOUNT_AUTO_SIGNUP = True   # Skip the signup form if user data is valid
 
 # Security Settings - only in production
 if not DEBUG:

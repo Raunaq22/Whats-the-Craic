@@ -1,16 +1,12 @@
 {% load allauth socialaccount %}
 {% get_providers as socialaccount_providers %}
 {% if socialaccount_providers %}
-    <div class="social-buttons d-flex justify-content-center"> <!-- Center the buttons horizontally -->
-        <div class="row">
+    <div class="w-100">
             {% for provider in socialaccount_providers %}
-                <div class="col-md-12"> <!-- Customize the width of each button column -->
                     {% provider_login_url provider process=process scope=scope auth_params=auth_params as href %}
-                    <a href="{{ href }}" class="btn btn-outline-info social-button mb-4 btn-block"> <!-- Customize button appearance with inline styles -->
+            <a href="{{ href }}" class="btn btn-{{ provider.id|lower }} mb-3 py-2 w-100">
                         Continue with {{ provider.name }}
                     </a>
-                </div>
             {% endfor %}
-        </div>
     </div>
 {% endif %}

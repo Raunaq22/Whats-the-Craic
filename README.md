@@ -1,7 +1,11 @@
 <div align="center">
-  <img src="event_management/events/templates/static/icon/ms-icon-310x310.png" alt="Event Management System Logo" width="200">
+  <a href="https://whats-the-craic.vercel.app" target="_blank">
+    <img src="event_management/staticfiles/icon/ms-icon-310x310.png" alt="Event Management System Logo" width="200">
+  </a>
   <br>
-  <img src="event_management/events/templates/static/icon/wtc-logo.png" alt="WTC Logo" width="200">
+  <a href="https://whats-the-craic.vercel.app" target="_blank">
+    <img src="event_management/staticfiles/icon/wtc-logo.png" alt="WTC Logo" width="200">
+  </a>
   <br><br>
   <h3>
     <a href="https://whats-the-craic.vercel.app" target="_blank">☘️ Live Demo</a>

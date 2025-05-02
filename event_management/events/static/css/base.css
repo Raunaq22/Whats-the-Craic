@@ -1,0 +1,224 @@
+html {
+    height: 100%;
+}
+
+body {
+    font-family: 'PT Sans';
+    min-height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    padding-bottom: 230px; /* Height of the footer */
+}
+
+.custom-navbar {
+    background-color: #32936F;
+}
+
+.custom-footer{
+    background-color: #32936F;
+}
+
+.page-content {
+    padding-bottom: 30px;
+}
+
+main.container {
+    padding-bottom: 30px; /* Add some space between content and footer */
+}
+
+.container-fluid-image{
+    background-image: url('../images/form-bg.png');
+    padding-top: 40px;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh; /* Adjust as needed */
+    padding: 50px 0; /* Adjust padding as needed */
+}
+
+.gradient-heading {
+    background: linear-gradient(195deg, #4daa88, #0c885a);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 700;
+}
+
+label.form-label.requiredField{
+    font-size: 20px;
+}
+label.form-label{
+    font-size: 20px;
+}
+.asteriskField {
+    display: none;
+}
+
+#map {
+    height: 400px;
+}
+
+/* Style the select box */
+#county-filter {
+    color: #32936F;
+    font-weight: 500;
+    font-size: 36px; /* Adjust font size as needed */
+    border: 0;
+    width: 300px;
+    background: none;
+    appearance: none;
+    -webkit-appearance: none;
+    padding-left: 65px; /* Add padding for the arrow */
+    background-image: url('../icon/down-arrown.png'); /* Add your arrow image path */
+    background-repeat: no-repeat;
+    background-position: left center;
+}
+
+/* Hide the default dropdown arrow */
+#county-filter::-ms-expand {
+    display: none;
+}
+
+#headings{
+    color: #32936F; 
+    font-weight: 1000
+}
+
+.btn-primary{
+    background-color: #32936F; 
+    border-color: #32936F;
+}
+.btn-primary:hover{
+    background-color: white; 
+    border-color: #32936F;
+    color: #32936F;
+}
+
+/* Footer styling */
+.custom-footer {
+    background-color: #32936F;
+    color: #ffffff;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+    min-height: 200px; /* Set a minimum height */
+  }
+  
+  .custom-footer a {
+    color: #ffffff; /* Set the link color to white */
+  }
+  
+  .custom-footer a:hover {
+    color: #cccccc; /* Set the link hover color */
+  }
+ 
+  .dropdown-item:hover {
+    background-color: #32936F; /* Change to your desired color */
+    color: #fff; /* Change text color to ensure contrast */
+  }
+
+/* Auth form styling */
+.auth-form-container {
+    max-width: 550px;
+    margin: 2rem auto;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.auth-form-container h1 {
+    color: #32936F;
+    margin-bottom: 1.8rem;
+    font-weight: 700;
+    font-size: 2.2rem;
+}
+
+.auth-form-container .form-group {
+    margin-bottom: 1.25rem;
+}
+
+.auth-form-container label {
+    font-weight: 600;
+    color: #444;
+}
+
+.auth-form-container .form-control {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    transition: all 0.3s ease;
+}
+
+.auth-form-container .form-control:focus {
+    border-color: #32936F;
+    box-shadow: 0 0 0 0.2rem rgba(50, 147, 111, 0.25);
+}
+
+.auth-form-container .btn-primary {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin-top: 1rem;
+}
+
+.auth-form-container .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.auth-form-container .social-buttons .btn {
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.75rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.auth-form-container .social-buttons .btn-github {
+    background-color: #24292e;
+    border-color: #24292e;
+}
+
+.auth-form-container .social-buttons .btn-google {
+    background-color: #4285F4;
+    border-color: #4285F4;
+}
+
+.auth-form-container .social-buttons .btn:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.auth-form-container hr {
+    margin: 1.5rem 0;
+    border-color: #eee;
+}
+
+.auth-form-container .text-center {
+    margin-top: 1rem;
+}
+
+.auth-form-container .text-center a {
+    color: #32936F;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.auth-form-container .text-center a:hover {
+    text-decoration: underline;
+}
+
+

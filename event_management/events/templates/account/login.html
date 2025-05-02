@@ -7,28 +7,34 @@
 {% block content %}
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-6">
-                <h1 id="headings" class="text-center mb-4">{% trans "Sign In" %}</h1>
+            <div class="auth-form-container">
+                <h1 class="text-center">{% trans "Sign In" %}</h1>
                 {% url 'account_login' as login_url %}
-                <form method="post" action="{{ login_url }}" class="mt-4">
+                <form method="post" action="{{ login_url }}">
                     {% csrf_token %}
                     {% if redirect_field_value %}
                         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                     {% endif %}
-                    <div class="form-group">
-                        <label for="id_login">{{ _("Username or email") }}</label>
-                        <input type="text" name="login" id="id_login" class="form-control" autofocus />
+                    <div class="form-group mb-4">
+                        <label for="id_login" class="mb-2">{{ _("Username or email") }}</label>
+                        <input type="text" name="login" id="id_login" class="form-control py-2" autofocus />
                     </div>
-                    <div class="form-group">
-                        <label for="id_password">{{ _("Password") }}</label>
-                        <input type="password" name="password" id="id_password" class="form-control" />
+                    <div class="form-group mb-4">
+                        <label for="id_password" class="mb-2">{{ _("Password") }}</label>
+                        <input type="password" name="password" id="id_password" class="form-control py-2" />
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block mt-3">{{ _("Sign In") }}</button>
+                    <button type="submit" class="btn btn-primary py-2 mt-3">{{ _("Sign In") }}</button>
                 </form>
-                <p class="text-center mt-3 mb-3">{% blocktrans %}If you have not created an account yet, then please <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}</p>
+                
+                <div class="text-center mt-4">
+                    {% blocktrans %}If you have not created an account yet, then please <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}
+                </div>
 
                 {% if SOCIALACCOUNT_ENABLED %}
+                    <hr class="my-4">
+                    <div class="social-buttons">
                     {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+                    </div>
                 {% endif %}
             </div>
         </div>

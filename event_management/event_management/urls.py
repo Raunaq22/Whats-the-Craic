@@ -22,8 +22,13 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", include("events.urls")),
+    
+    # Auth URLs
     path('accounts/', include('allauth.urls')),
-    path('accounts/', include('allauth.socialaccount.urls')),
+    
+    # REST API URLs
+    path('api/', include('events.api_urls')),
+    path('api-auth/', include('rest_framework.urls')),  # Authentication URLs
 ]
 
 # Serve static and media files in development
