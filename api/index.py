@@ -42,6 +42,9 @@ safe_env = {k: v for k, v in os.environ.items()
             if not any(s in k.lower() for s in ['key', 'password', 'secret', 'token'])}
 logger.info(f"Environment variables: {safe_env}")
 
+# Capture the exception at the module level
+initialization_error = None
+
 try:
     logger.info("Importing Django...")
     import django
@@ -98,12 +101,13 @@ try:
     logger.info("Django application initialized successfully with REST API support")
             
 except Exception as e:
+    initialization_error = e
     logger.error(f"Initialization error: {str(e)}")
     logger.error(traceback.format_exc())
     
     # Create a simple error handler for any initialization errors
     def app(event, context):
-        error_message = f"Server initialization error: {str(e)}\n{traceback.format_exc()}"
+        error_message = f"Server initialization error: {str(initialization_error)}\n{traceback.format_exc()}"
         logger.error(f"Error handling request: {error_message}")
         return {
             'statusCode': 500,
@@ -118,8 +122,8 @@ if 'app' in locals() and callable(app):
             logger.info(f"Handling request: {event}")
             response = original_app(event, context)
             return response
-        except Exception as e:
-            error_message = f"Runtime error: {str(e)}\n{traceback.format_exc()}"
+        except Exception as runtime_error:
+            error_message = f"Runtime error: {str(runtime_error)}\n{traceback.format_exc()}"
             logger.error(error_message)
             return {
                 'statusCode': 500,
