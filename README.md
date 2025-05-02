@@ -1,10 +1,10 @@
 <div align="center">
   <a href="https://whats-the-craic.vercel.app" target="_blank">
-    <img src="event_management/staticfiles/icon/ms-icon-310x310.png" alt="Event Management System Logo" width="200">
+    <img src="event_management/events/static/icon/ms-icon-310x310.png" alt="Event Management System Logo" width="200">
   </a>
   <br>
   <a href="https://whats-the-craic.vercel.app" target="_blank">
-    <img src="event_management/staticfiles/icon/wtc-logo.png" alt="WTC Logo" width="200">
+    <img src="event_management/events/static/icon/wtc-logo.png" alt="WTC Logo" width="200">
   </a>
   <br><br>
   <h3>
